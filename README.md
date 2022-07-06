@@ -64,7 +64,10 @@ The ```$EXP``` variable can be any config name in ```./configs/```, such as ```D
 
 ```python3 distributed.py -c configs/${EXP}.json```
 
-8 GPUs are used for training. **Pre-trained** models are provided in ```./exp/${EXP}/checkpoint/pretrained.pkl``` (each one has size ~177Mb). 
+We use 8 GPUs for training. The global batch size is 64 and we train the models for 250K iterations. Note that, this is different from the training setup in our paper i.e., 1M iterations with a batch size of 16. We find negligible difference in terms of objective and subjective evaluation, but the current setup is faster.
+
+**Pre-trained** models are provided in ```./exp/${EXP}/checkpoint/pretrained.pkl``` (each one has size ~177Mb).
+
 
 ## Denoising
 

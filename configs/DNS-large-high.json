@@ -1,0 +1,54 @@
+{   
+    "network_config": {
+        "channels_input": 1,
+        "channels_output": 1,
+        "channels_H": 64,
+        "max_H": 768,
+        "encoder_n_layers": 8,
+        "kernel_size": 4,
+        "stride": 2,
+        "tsfm_n_layers": 5, 
+        "tsfm_n_head": 8,
+        "tsfm_d_model": 512, 
+        "tsfm_d_inner": 2048
+    },
+    "train_config": {
+        "exp_path": "DNS-large-high",
+        "log":{
+            "directory": "./exp",
+            "ckpt_iter": "max",
+            "iters_per_ckpt": 10000,
+            "iters_per_valid": 500
+        },
+        "optimization":{
+            "n_iters": 250000,
+            "learning_rate": 2e-4,
+            "batch_size_per_gpu": 8
+        },
+        "loss_config":{
+            "ell_p": 1,
+            "ell_p_lambda": 1,
+            "stft_lambda": 1,
+            "stft_config":{
+                "sc_lambda": 0.5,
+                "mag_lambda": 0.5,
+                "band": "high",
+                "hop_sizes": [50, 120, 240],
+                "win_lengths": [240, 600, 1200],
+                "fft_sizes": [512, 1024, 2048]
+            }
+        }
+    },
+    "trainset_config": {
+        "root": "./dns",
+        "crop_length_sec": 10,
+        "sample_rate": 16000
+    },
+    "gen_config":{
+        "output_directory": "./exp"
+    },
+    "dist_config": {
+        "dist_backend": "nccl",
+        "dist_url": "tcp://localhost:54321"
+    }
+}
