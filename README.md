@@ -93,7 +93,7 @@ The following evaluation code generates [PESQ](https://www.itu.int/rec/T-REC-P.8
 
 To synthesize [Microsoft DNS 2020](https://arxiv.org/ftp/arxiv/papers/2005/2005.13981.pdf) training data, you need [these dependencies](https://github.com/microsoft/DNS-Challenge/blob/interspeech2020/master/requirements.txt). If you just want to evaluate our pre-trained models on the test data, you may jump this.
 
-Our code is tested on 8 NVIDIA V100 GPUs. You need to install very standard dependencies: ```numpy``` and ```scipy``` for scientific computing, ```torch, torchvision, torchaudio``` for deep learning, and ```librosa, pesq, pystoi``` for audio processing and evaluation.
+Our code is tested on 8 NVIDIA V100 GPUs. You need to install very standard dependencies: ```numpy``` and ```scipy``` for scientific computing, ```torch, torchvision, torchaudio``` for deep learning, and ```pesq, pystoi``` for audio processing and evaluation.
 
 ## References
 
