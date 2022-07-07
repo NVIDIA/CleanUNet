@@ -51,7 +51,7 @@ Training sets:
 ./dns/training_set/noisy/fileid_{0..59999}.wav
 ./dns/training_set/noise/fileid_{0..59999}.wav
 
-Testing sets:
+Testing sets (no-reverb):
 ./dns/datasets/test_set/synthetic/no_reverb/clean/clean_fileid_{0..299}.wav
 ./dns/datasets/test_set/synthetic/no_reverb/noisy/noisy_fileid_{0..299}.wav
 ```
@@ -66,12 +66,11 @@ The ```$EXP``` variable can be any config name in ```./configs/```, such as ```D
 
 We use 8 GPUs for training. The global batch size is 64 and we train the models for 250K iterations. Note that, this is different from the training setup in our paper i.e., 1M iterations with a batch size of 16. We find negligible difference in terms of objective and subjective evaluation, but the current setup is faster.
 
-**Pre-trained** models are provided in ```./exp/${EXP}/checkpoint/pretrained.pkl``` (each one has size ~177Mb).
-
+**Pre-trained** models for denoising are provided in ```./exp/${EXP}/checkpoint/pretrained.pkl``` (each one has size ~177Mb; use ```git lfs``` to download). Note that these models are not trained to remove reverb. 
 
 ## Denoising
 
-The output path is ```gen_config[output_directory]```, which is ```./exp``` by default. The denoising code is
+We perform denoising on the DNS no-reverb test dataset. The output path is ```gen_config[output_directory]```, which is ```./exp``` by default. The denoising code is
 
 ```python denoise.py -c configs/${EXP}.json --ckpt_iter ${ITERATION}```
 
@@ -93,7 +92,7 @@ The following evaluation code generates [PESQ](https://www.itu.int/rec/T-REC-P.8
 
 To synthesize [Microsoft DNS 2020](https://arxiv.org/ftp/arxiv/papers/2005/2005.13981.pdf) training data, you need [these dependencies](https://github.com/microsoft/DNS-Challenge/blob/interspeech2020/master/requirements.txt). If you just want to evaluate our pre-trained models on the test data, you may jump this.
 
-Our code is tested on 8 NVIDIA V100 GPUs. You need to install very standard dependencies: ```numpy``` and ```scipy``` for scientific computing, ```torch, torchvision, torchaudio``` for deep learning, and ```pesq, pystoi``` for audio processing and evaluation.
+Our code is tested on 8 NVIDIA V100 GPUs. You need to install very standard dependencies: ```numpy``` and ```scipy``` for scientific computing, ```torch, torchvision, torchaudio``` for deep learning and data loading, ```pesq, pystoi``` for audio evaluation, and ```tqdm``` for visualization.
 
 ## References
 
