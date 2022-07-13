@@ -36,7 +36,7 @@ noisefilename = 'fileid_' + str(file_num) + '.wav'
 ```
 To generate training data, run 
 ```
-python noisyspeech_synthesizer_singleprocessing.py
+python noisyspeech_synthesizer_singleprocess.py
 ```
 It is also recommended to rename files in the test set for conciseness:
 ```
