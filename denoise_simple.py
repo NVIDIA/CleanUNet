@@ -56,7 +56,7 @@ def load_simple(filename):
     
 
 
-def denoise(files, ckpt_path):
+def denoise(files, ckpt_path, batch_size):
     """
     Denoise audio
 
@@ -88,7 +88,6 @@ def denoise(files, ckpt_path):
     net.eval()
 
     # inference
-    batch_size = 1000000
     for file_path in tqdm(files):
         file_name = os.path.basename(file_path)
         file_dir = os.path.dirname(file_name)
@@ -118,8 +117,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', type=str, default='config.json',
                         help='JSON file for configuration')
-    parser.add_argument('-ckpt_iter', '--ckpt_iter', default='max',
-                        help='Which checkpoint to use; assign a number or "max" or "pretrained"')     
+    parser.add_argument('-ckpt_path', '--ckpt_path',
+                        help='Path to the checkpoint you want to use')     
+    parser.add_argument('-b', '--batch_size', type=int, help='chunk your input audio vector into chunks of batch_size. not exact.', default=100_000)
 
     parser.add_argument('files', nargs=argparse.REMAINDER)
 
@@ -137,9 +137,11 @@ if __name__ == "__main__":
     global trainset_config
     trainset_config         = config["trainset_config"]     # to read trainset configurations
     files = args.files
+    bs = args.batch_size
+
 
     torch.backends.cudnn.enabled = True
     torch.backends.cudnn.benchmark = True
 
-    denoise(files,args.ckpt_iter)
+    denoise(files,args.ckpt_path, batch_size=bs)
     

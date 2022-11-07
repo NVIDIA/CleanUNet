@@ -90,6 +90,14 @@ For example, if you want to use pre-trained models to denoise, run:
 
 1 GPU is used for denoising.
 
+## Simple Denoising without dataset
+
+There is a script `simple_infrence.py` to denoise single or multiple files. It also does automatic fp16 conversion. You can also adjust batch size to fit your vram.
+
+```denoise_simple.py python denoise.py -c configs/${EXP}.json --ckpt_path ${file.plk} -b 1000000 `<you file list here>````
+
+``` python denoise_simple.py -c configs/DNS-large-high.json --ckpt_pat ./exp/DNS-large-high/checkpoint/pretrained.pkl ./test.mp4```
+
 ## Evaluation
 
 The following evaluation code generates [PESQ](https://www.itu.int/rec/T-REC-P.862) and [STOI](https://ceestaal.nl/code/) scores. More evaluation metrics can be found in the [SEGAN (PyTorch)](https://github.com/santi-pdp/segan_pytorch) repo.
@@ -97,14 +105,6 @@ The following evaluation code generates [PESQ](https://www.itu.int/rec/T-REC-P.8
 ``python python_eval.py -d dns -e ${PATH_TO_DENOISED_SPEECH} -t ${PATH_TO_TESTSET_PATH} >> eval.log``
 
 1 GPU is used for evaluation.
-
-# Simple Inference
-
-I made a simple_infrence.py to denoise single or multiple files. It also does automatic fp16 casting.
-
-```powershell
- python denoise_simple.py -c configs/DNS-large-high.json --ckpt_iter ./exp/DNS-large-high/checkpoint/pretrained.pkl <you file list here>
-```
 
 ## Requirements
 
