@@ -14,9 +14,9 @@ from various objective and subjective evaluation metrics. Sound demos can be fou
 - [Microsoft DNS 2020](https://arxiv.org/ftp/arxiv/papers/2005/2005.13981.pdf) dataset. The dataset, pre-processing codes, and instruction to generate training data can be found in [this link](https://github.com/microsoft/DNS-Challenge/tree/interspeech2020/master). Assume the dataset is stored under ``./dns``. Before generating clean-noisy data pairs, modify the following parameters in their ``noisyspeech_synthesizer.cfg`` file:
 
 ```
-total_hours: 500, 
-snr_lower: -5, 
-snr_upper: 25, 
+total_hours: 500,
+snr_lower: -5,
+snr_upper: 25,
 total_snrlevels: 31
 ```
 
@@ -50,13 +50,13 @@ It is also recommended to rename files in the test set for conciseness:
 
 ```
 cd ./dns/datasets/test_set/synthetic/no_reverb/noisy/
-for NAME in $(ls ./); do arr=(${NAME//fileid_/ }); mv ${NAME} noisy_fileid_${arr[1]}; done 
+for NAME in $(ls ./); do arr=(${NAME//fileid_/ }); mv ${NAME} noisy_fileid_${arr[1]}; done
 ```
 
 After these steps, we assume that the structure of the dataset folder is:
 
 ```
-Training sets: 
+Training sets:
 ./dns/training_set/clean/fileid_{0..59999}.wav
 ./dns/training_set/noisy/fileid_{0..59999}.wav
 ./dns/training_set/noise/fileid_{0..59999}.wav
@@ -94,7 +94,7 @@ For example, if you want to use pre-trained models to denoise, run:
 
 There is a script `simple_infrence.py` to denoise single or multiple files. It also does automatic fp16 conversion. You can also adjust batch size to fit your vram.
 
-```denoise_simple.py python denoise.py -c configs/${EXP}.json --ckpt_path ${file.plk} -b 1000000 `<you file list here>````
+```denoise_simple.py python denoise.py -c configs/${EXP}.json --ckpt_path ${file.plk} -b 1000000 -sr 16000 \<you file list here>````
 
 ``` python denoise_simple.py -c configs/DNS-large-high.json --ckpt_pat ./exp/DNS-large-high/checkpoint/pretrained.pkl ./test.mp4```
 

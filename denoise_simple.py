@@ -53,7 +53,7 @@ import torchaudio
 def load_simple(filename):
     audio, _ = torchaudio.load(filename)
     return audio
-    
+
 
 
 def denoise(files, ckpt_path, batch_size):
@@ -62,7 +62,7 @@ def denoise(files, ckpt_path, batch_size):
 
     Parameters:
     output_directory (str):         save generated speeches to this path
-    ckpt_iter (int or 'max'):       the pretrained checkpoint to be loaded; 
+    ckpt_iter (int or 'max'):       the pretrained checkpoint to be loaded;
                                     automitically selects the maximum iteration if 'max' is selected
     subset (str):                   training, testing, validation
     dump (bool):                    whether save enhanced (denoised) audio
@@ -103,12 +103,12 @@ def denoise(files, ckpt_path, batch_size):
                     generated_audio = sampling(net, batch)
                     generated_audio = generated_audio.cpu().numpy().squeeze()
                     all_audio.append(generated_audio)
-        
+
         all_audio = np.concatenate(all_audio, axis=0)
         save_file = os.path.join(file_dir, new_file_name)
         print("saved to:", save_file)
-        wavwrite(save_file, 
-                32000,
+        wavwrite(save_file,
+                trainset_config["sample_rate"],
                 all_audio.squeeze())
 
 
@@ -118,8 +118,9 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--config', type=str, default='config.json',
                         help='JSON file for configuration')
     parser.add_argument('-ckpt_path', '--ckpt_path',
-                        help='Path to the checkpoint you want to use')     
+                        help='Path to the checkpoint you want to use')
     parser.add_argument('-b', '--batch_size', type=int, help='chunk your input audio vector into chunks of batch_size. not exact.', default=100_000)
+    parser.add_argument('-sr', '--sample_rate', type=int, help='sample rate of the audio', default=16_000)
 
     parser.add_argument('files', nargs=argparse.REMAINDER)
 
@@ -136,6 +137,7 @@ if __name__ == "__main__":
     train_config            = config["train_config"]        # train config
     global trainset_config
     trainset_config         = config["trainset_config"]     # to read trainset configurations
+    trainset_config        = {**trainset_config, **{"sample_rate": args.sample_rate}} # merge trainset_config and sample_rate from args
     files = args.files
     bs = args.batch_size
 
@@ -144,4 +146,4 @@ if __name__ == "__main__":
     torch.backends.cudnn.benchmark = True
 
     denoise(files,args.ckpt_path, batch_size=bs)
-    
+
