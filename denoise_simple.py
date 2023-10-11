@@ -138,7 +138,18 @@ if __name__ == "__main__":
     global trainset_config
     trainset_config         = config["trainset_config"]     # to read trainset configurations
     trainset_config        = {**trainset_config, **{"sample_rate": args.sample_rate}} # merge trainset_config and sample_rate from args
-    files = args.files
+    files = []
+    for file in args.files:
+        if os.path.isfile(file):
+            files.append(file)
+        elif os.path.isdir(file):
+            for f in os.listdir(file):
+                if os.path.isfile(os.path.join(file, f)) and any([f.endswith(ext) for ext in [".wav", ".mp3", ".flac"]]):
+                    files.append(os.path.join(file, f))
+                else:
+                    print("skipping", f)
+        else:
+            print("skipping", file)
     bs = args.batch_size
 
 
